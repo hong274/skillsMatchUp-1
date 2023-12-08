@@ -4,3 +4,14 @@
 @tailwind utilities;
 
 @import '@angular/cdk/overlay-prebuilt.css';
+
+.bg-success-700 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(129, 41, 95);
+}
+
+.hover\\:bg-success-700:hover {
+    background-color: rgb(170, 88, 138);
+}
+
+
