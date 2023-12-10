@@ -1,6 +1,7 @@
 package com.skillsmatchup.spring.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.skillsmatchup.spring.mvc.model.User;
 import com.skillsmatchup.spring.mvc.service.UserService;
@@ -44,6 +46,22 @@ public class UserController {
 		System.out.println("Updating an user Info");
 		return userService.update(id, user);
 	}
+
+	@PostMapping("login")
+    public Mono<User> login(@RequestBody final User user) {
+        System.out.println("Login attempt for user: " + user.getEmail());
+
+		Mono<User> tempUserMono = userService.getByEmailAndPassword(user.getEmail(), user.getPassword()).defaultIfEmpty(new User());
+
+		return tempUserMono.flatMap(data -> {
+			if (data.getId() != null) {
+				return userService.getByEmailAndPassword(user.getEmail(), user.getPassword());
+			} else {
+				String errorMessage = "Invalid input. Please check the data.";
+				return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage));
+			}
+		});
+    }
 
 	@PostMapping
 	public Mono save(@RequestBody final User user) {

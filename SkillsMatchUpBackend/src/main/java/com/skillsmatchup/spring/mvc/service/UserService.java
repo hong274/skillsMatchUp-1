@@ -33,6 +33,10 @@ public class UserService {
 		return userRepository.findByName(name);
 	}
 
+	public Mono<User> getByEmailAndPassword(final String email, final String password) {
+		return userRepository.findByEmailAndPassword(email, password);
+	}
+
 	public Mono update(final String name, final User user) {
 		return userRepository.findByName(name).flatMap(existingUser -> {
 			existingUser.setEmail(user.getEmail());

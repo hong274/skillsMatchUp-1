@@ -14,4 +14,7 @@ public interface UserRepository extends  ReactiveMongoRepository<User, String>{
     @Query("{ 'name' : ?0 }")
     Mono<User> findByName(String name);
 
+    @Query("{ 'email' : ?0, 'password' : ?1 }")
+    Mono<User> findByEmailAndPassword(String email, String password);
+
 }
