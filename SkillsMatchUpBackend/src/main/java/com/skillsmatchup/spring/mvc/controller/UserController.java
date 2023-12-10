@@ -1,6 +1,7 @@
 package com.skillsmatchup.spring.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("user")
 @AllArgsConstructor
 @RestController
@@ -31,10 +33,10 @@ public class UserController {
 		return userService.getAll();
 	}
 
-	@GetMapping("{id}")
-	public Mono<User> getById(@PathVariable("id") final String id) {
-		System.out.println("One user information based for the given ID");
-		return userService.getById(id);
+	@GetMapping("{name}")
+	public Mono<User> getById(@PathVariable("name") final String name) {
+		System.out.println("One user information based for the given name");
+		return userService.getByName(name);
 	}
 
 	@PutMapping("{id}")

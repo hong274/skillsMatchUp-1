@@ -25,12 +25,16 @@ public class UserService {
 		return userRepository.findAll().switchIfEmpty(Flux.empty());
 	}
 
-	public Mono<User> getById(final String id) {
+	/*public Mono<User> getById(final String id) {
 		return userRepository.findById(id);
+	}*/
+
+	public Mono<User> getByName(final String name) {
+		return userRepository.findByName(name);
 	}
 
-	public Mono update(final String id, final User user) {
-		return userRepository.findById(id).flatMap(existingUser -> {
+	public Mono update(final String name, final User user) {
+		return userRepository.findByName(name).flatMap(existingUser -> {
 			existingUser.setEmail(user.getEmail());
 			return userRepository.save(existingUser);
 		});
@@ -40,13 +44,13 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public Mono delete(final String id) {
-		final Mono<User> dbUser = getById(id);
+	public Mono delete(final String name) {
+		final Mono<User> dbUser = getByName(name);
 		if (Objects.isNull(dbUser)) {
 			return Mono.empty();
 		}
 
-		return getById(id).switchIfEmpty(Mono.empty()).filter(Objects::nonNull)
+		return getByName(name).switchIfEmpty(Mono.empty()).filter(Objects::nonNull)
 				.flatMap(userToBeDeleted -> userRepository.delete(userToBeDeleted).then(Mono.just(userToBeDeleted)));
 	}
 }

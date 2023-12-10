@@ -6,11 +6,13 @@ public class User {
 
 	@Id
 	private String id;
+	private String name;
 	private String email;
 	private String password;
 
-	public User(String email, String password) {
+	public User(String name, String email, String password) {
 		super();
+		this.name = name;
 		this.email = email;
 		this.password = password;
 	}
@@ -21,6 +23,14 @@ public class User {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {
@@ -41,7 +51,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + "]";
 	}
 
 }
