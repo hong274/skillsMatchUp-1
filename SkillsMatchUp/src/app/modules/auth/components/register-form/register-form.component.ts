@@ -37,7 +37,7 @@ export class RegisterFormComponent {
       this.status = 'loading';
       const { name, email, password } = this.form.getRawValue();
 
-      // Add a null check for the password
+      // Add a null check 
       if (name !== null && password !== null && email !== null) {
         this.authService.register(name, email, password).subscribe({
           next: () => {
@@ -50,7 +50,7 @@ export class RegisterFormComponent {
           },
         });
       } else {
-        // Handle the case where password is null (optional)
+        // Handle the case where input is null (optional)
         console.error('Input is null');
         this.status = 'failed'; // or handle accordingly
       }

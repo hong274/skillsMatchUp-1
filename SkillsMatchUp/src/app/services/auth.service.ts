@@ -16,11 +16,17 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  login(email: string, password: string) {
-    return this.http.post(`${this.apiUrl}/api/v1/auth/login`, {
-      email,
-      password
-    });
+  login(email: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const url = `${this.apiUrl}/user/login`;
+    const body = { email, password };
+
+    return this.http.post(url, body).pipe(
+      catchError((error) => {
+        console.error('Login failed:', error);
+        return throwError(error);
+      })
+    );
   }
 
   register(name: string, email: string, password: string): Observable<any> {
